@@ -1,10 +1,8 @@
+const combinationsFunctions = require("./combinations");
+
 const MAX_BOOSTS = 5;
 const MAX_DURATION = 30;
 const CALC_DURATION = 10;
-
-if (CALC_DURATION >= MAX_DURATION) {
-  throw "CALC_DURATION must be less than MAX_DURATION";
-}
 
 const boostTexts = [
   "50:    3e  20m",
@@ -18,6 +16,9 @@ const boostTexts = [
   "50000: 50m 10m"
 ]
 
+if (CALC_DURATION >= MAX_DURATION) {
+  throw "CALC_DURATION must be less than MAX_DURATION";
+}
 
 // Turn the boost texts into an array of boost objects
 const boosts = [];
@@ -41,21 +42,6 @@ boostTexts.forEach(boostText => {
 });
 
 // Generate all possible combinations of boosts
-const combinations = generateCombination(boosts);
-console.log(JSON.stringify(combinations));
-
-function generateCombination(boosts, base = [], deapth = 5) {
-  if (deapth == 0) {
-    return [];
-  }
-
-  var combinations = [];
-
-  boosts.forEach(boost => {
-    var newCombination = base.concat([boost]);
-    combinations.push(newCombination);
-    combinations = combinations.concat(generateCombination(boosts, newCombination, deapth - 1));
-  });
-
-  return combinations;
-}
+const combinations = combinationsFunctions.simpleRecursive(boosts, (combination) => {
+  console.log(JSON.stringify(combination));
+});
