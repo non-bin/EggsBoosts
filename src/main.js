@@ -1,8 +1,9 @@
-const combinationsFunctions = require("./combinations");
+const combinationFunctions = require("./combinations");
+const permutationFunctions = require("./permutations");
 
 const MAX_BOOSTS = 5;
-const MAX_DURATION = 30;
-const CALC_DURATION = 10;
+const MAX_DURATION = 60;
+const CALC_DURATION = 30;
 
 const boostTexts = [
   "50:    3e  20m",
@@ -41,7 +42,23 @@ boostTexts.forEach(boostText => {
   boosts.push(boost);
 });
 
+var noPermutations = 0;
+var lastDisplayUpdate = 0;
+function updateDisplay() {
+  process.stdout.write('\x1b[1A\x1b[0G'); // Move cursor up 1 line and to the start of the line
+  process.stdout.write(`Permutations: ${noPermutations}\n`);
+}
+process.stdout.write('\n');
+
 // Generate all possible combinations of boosts
-const combinations = combinationsFunctions.simpleRecursive(boosts, (combination) => {
-  console.log(JSON.stringify(combination));
+combinationFunctions.simpleRecursive(boosts, (combination) => {
+  // Generate all possible permutations of the combination
+  permutationFunctions.alignStartOrEnd(combination, (permutation) => {
+    noPermutations++;
+
+    if (process.uptime() - lastDisplayUpdate > 0.1) {
+      lastDisplayUpdate = process.uptime();
+      updateDisplay();
+    }
+  });
 });
