@@ -15,7 +15,7 @@
       "outFiles": [
         "${workspaceFolder}/**/*.js"
       ],
-      "console": "integratedTerminal"
+      // "console": "integratedTerminal"
     }
   ]
 }
